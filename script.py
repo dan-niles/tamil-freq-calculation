@@ -9,6 +9,7 @@ nltk.download("wordnet")
 
 INPUT_FILE = "data/input/21339_Tamil.txt"
 OUTPUT_FRQ_FILE = "data/output/Frq.csv"
+OUTPUT_FRFR_FILE = "data/output/FrFr.csv"
 
 with open(INPUT_FILE, "r") as f:
     text = f.read()
@@ -38,3 +39,13 @@ with open(OUTPUT_FRQ_FILE, "w", newline="", encoding="utf-8") as csv_file:
     writer.writerow(["Word", "Freq"])
     writer.writerows(word_freq.items())
 print("Output written to CSV file successfully.")
+
+# Calculate the frequency of frequencies
+freq_of_freq = Counter(word_freq.values())
+
+# Write the frequency of frequencies to a CSV file
+with open(OUTPUT_FRFR_FILE, "w", newline="", encoding="utf-8") as csv_file:
+    writer = csv.writer(csv_file)
+    writer.writerow(["Freq", "FreqOfFreq"])
+    writer.writerows(freq_of_freq.items())
+print("Output written to FrFr.csv file successfully.")
