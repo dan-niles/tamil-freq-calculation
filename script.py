@@ -1,5 +1,6 @@
 import nltk
 import csv
+import string
 
 import matplotlib.pyplot as plt
 from nltk.stem import WordNetLemmatizer
@@ -27,7 +28,11 @@ lemmatizer = WordNetLemmatizer()
 print("Lemmatizer initialized successfully.")
 
 # Normalize and lemmatize the words
-normalized_words = (lemmatizer.lemmatize(word) for word in words)
+normalized_words = (
+    lemmatizer.lemmatize(word)
+    for word in words
+    if not all(char in string.punctuation for char in word)  # Remove punctuation
+)
 print("Words normalized and lemmatized successfully.")
 
 # Count the frequencies using a defaultdict
@@ -71,7 +76,13 @@ frequencies = [freq for word, freq in sorted_word_freq]
 # Plotting rank vs frequency
 plt.figure(figsize=(10, 6))
 plt.plot(
-    ranks, frequencies, marker="o", linestyle="-", color="b", label="Word Frequency"
+    ranks,
+    frequencies,
+    marker="o",
+    linestyle="-",
+    color="b",
+    label="Word Frequency",
+    markersize=3,
 )
 
 plt.yscale("log")  # Logarithmic scale for better visualization of frequencies
