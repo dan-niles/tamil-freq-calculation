@@ -1,6 +1,7 @@
 import nltk
 import csv
 
+import matplotlib.pyplot as plt
 from nltk.stem import WordNetLemmatizer
 from collections import defaultdict, Counter
 
@@ -11,6 +12,7 @@ INPUT_FILE = "data/input/21339_Tamil.txt"
 OUTPUT_FRQ_FILE = "data/output/Frq.csv"
 OUTPUT_FRFR_FILE = "data/output/FrFr.csv"
 OUTPUT_RANK_FILE = "data/output/Rank.csv"
+OUTPUT_GRAPH_FILE = "data/output/Graph.png"
 
 with open(INPUT_FILE, "r") as f:
     text = f.read()
@@ -61,3 +63,24 @@ with open(OUTPUT_RANK_FILE, "w", newline="", encoding="utf-8") as csv_file:
     for rank, (word, freq) in enumerate(sorted_word_freq, start=1):
         writer.writerow([word, freq, rank])
 print("Output written to Rank.csv file successfully.")
+
+# Extract ranks and frequencies for plotting
+ranks = list(range(1, len(sorted_word_freq) + 1))
+frequencies = [freq for word, freq in sorted_word_freq]
+
+# Plotting rank vs frequency
+plt.figure(figsize=(10, 6))
+plt.plot(
+    ranks, frequencies, marker="o", linestyle="-", color="b", label="Word Frequency"
+)
+
+plt.yscale("log")  # Logarithmic scale for better visualization of frequencies
+
+plt.title("Rank vs Frequency of Words")
+plt.xlabel("Rank")
+plt.ylabel("Frequency")
+plt.legend()
+
+# Save the plot to Graph.png
+plt.savefig(OUTPUT_GRAPH_FILE)
+plt.show()
